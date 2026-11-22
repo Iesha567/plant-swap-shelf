@@ -14,7 +14,7 @@
  */
 
 import { json } from '@sveltejs/kit';
-import { updateSketch, deleteSketch } from '#lib/server/sketchApi.js';
+import { updatePlant, deletePlant } from '#lib/server/plantApi.js';
 
 export async function PATCH({ params, request }) {
 	let changes;
@@ -25,26 +25,26 @@ export async function PATCH({ params, request }) {
 	}
 
 	try {
-		const updated = await updateSketch(params.id, changes);
+		const updated = await updatePlant(params.id, changes);
 
 		// 404 = Not Found: Express answered, but no sketch has this id.
 		if (!updated) {
-			return json({ error: `No sketch found with id ${params.id}` }, { status: 404 });
+			return json({ error: `No plant found with id ${params.id}` }, { status: 404 });
 		}
 
 		return json(updated);
 	} catch (err) {
 		console.error('Failed to update sketch via Express:', err.message);
-		return json({ error: 'Could not reach the Sketch API' }, { status: 502 });
+		return json({ error: 'Could not reach the Plant API' }, { status: 502 });
 	}
 }
 
 export async function DELETE({ params }) {
 	try {
-		const wasDeleted = await deleteSketch(params.id);
+		const wasDeleted = await deletePlant(params.id);
 
 		if (!wasDeleted) {
-			return json({ error: `No sketch found with id ${params.id}` }, { status: 404 });
+			return json({ error: `No plant found with id ${params.id}` }, { status: 404 });
 		}
 
 		// 204 = No Content: it worked, and there is nothing to send back.
@@ -52,6 +52,6 @@ export async function DELETE({ params }) {
 		return new Response(null, { status: 204 });
 	} catch (err) {
 		console.error('Failed to delete sketch via Express:', err.message);
-		return json({ error: 'Could not reach the Sketch API' }, { status: 502 });
+		return json({ error: 'Could not reach the Plant API' }, { status: 502 });
 	}
 }

@@ -12,10 +12,17 @@
 import Plant from '../models/Plant.js';
 
 // READ — every sketch in the collection.
-export async function getAll() {
+export async function getAll(light) {
+	if (light) {
+		return Plant.find({ lightNeeds: light });
+	}
+
 	return Plant.find();
 }
 
+export async function getById(id) {
+	return Plant.findById(id);
+}
 // CREATE — save a new sketch. `data` holds title, artist and colorTag.
 // Gives back the saved sketch.
 export async function create(data) {

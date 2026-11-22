@@ -11,17 +11,18 @@
  */
 
 import { error } from '@sveltejs/kit';
-import { fetchSketches } from '#lib/server/sketchApi.js';
+import { fetchPlants } from '#lib/server/plantApi.js';
 
-export async function load() {
+export async function load({url}) {
 	try {
 		// await means: pause here until Express answers, then carry on.
-		const sketches = await fetchSketches();
-		return { sketches };
+		const light = url.searchParams.get('light');
+		const plants = await fetchPlants(light);
+		return { plants };
 	} catch (err) {
-		console.error('Failed to reach the Sketch API:', err.message);
+		console.error('Failed to reach the Plant API:', err.message);
 
 		// 502 = Bad Gateway: we could not get an answer from Express.
-		error(502, "Couldn't reach the Sketch API. Is the Express server running?");
+		error(502, "Couldn't reach the Plant API. Is the Express server running?");
 	}
 }
