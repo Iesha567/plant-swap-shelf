@@ -1,7 +1,5 @@
 # plant-swap-shelf
 
-# Plant Swap Shelf
-
 A plant swapping website built using SvelteKit, Express and MongoDB.
 
 ## Running the projects
