@@ -12,7 +12,11 @@
 
 	// Our own copy of the list, seeded from load()'s data, so the page can
 	// change straight after an add, star or delete without a reload.
-	let plants = $state(data.plants);
+	let plants = $state([]);
+
+	$effect(() => {
+		plants = data.plants;
+	});
 
 	// ADD — the form. A plain fetch() to OUR OWN /api/sketches route
 	// (src/routes/api/sketches/+server.js), never straight to Express.
@@ -118,7 +122,9 @@
 		{#each plants as plant (plant.id)}
 			<li class="sketch-card">
 				<div>
-					<strong><a href={`/shelf/${plant.id}`}>{plant.name}</a></strong>
+					<strong
+						><a href={`/shelf/${plant.id}`}>{plant.name}</a></strong
+					>
 					<span class="artist">{plant.species}</span>
 					<p>Light: {plant.lightNeeds}</p>
 					<p>{plant.swapped ? "Swapped" : "Available"}</p>
